@@ -2,7 +2,7 @@
 
 namespace TowerOfHanoi.Domain;
 
-public class TowerOfHanoi
+public class TowerOfHanoi : IObservable<Stack<int>[]>
 {
     private const string LevelSeparator = " - ";
     private const string PlaceSeparator = " / ";
@@ -10,8 +10,18 @@ public class TowerOfHanoi
 
     private readonly Stack<int>[] _levels = new Stack<int>[3];
     private static readonly int[] PlaceIndexes = { 0, 1, 2 };
-    
+
     private int _moveNumber;
+
+    private readonly List<IObserver<Stack<int>[]>> _observers = new();
+
+    public TowerOfHanoi(int levelNumber)
+    {
+        _levels[0] = new Stack<int>();
+        for (var currentLevel = levelNumber - 1; currentLevel >= 0; currentLevel--) _levels[0].Push(currentLevel);
+        _levels[1] = new Stack<int>();
+        _levels[2] = new Stack<int>();
+    }
 
     public TowerOfHanoi(Stack<int> levelsInA, Stack<int> levelsInB, Stack<int> levelsInC)
     {
@@ -21,13 +31,6 @@ public class TowerOfHanoi
         _levels[2] = levelsInC;
     }
 
-    public TowerOfHanoi(int levelNumber)
-    {
-        _levels[0] = new Stack<int>();
-        for (var currentLevel = levelNumber - 1; currentLevel >= 0; currentLevel--) _levels[0].Push(currentLevel);
-        _levels[1] = new Stack<int>();
-        _levels[2] = new Stack<int>();
-    }
 
     public void MoveLevels() => Move(_levels[0].Count, 0, 2);
 
@@ -45,7 +48,7 @@ public class TowerOfHanoi
             _moveNumber++;
             var levelToMove = _levels[startPlaceIndex].Pop();
             _levels[endPlaceIndex].Push(levelToMove);
-            Console.WriteLine(this);
+            foreach (var observer in _observers) observer.OnNext(_levels);
             return;
         }
 
@@ -62,7 +65,7 @@ public class TowerOfHanoi
         Move(1, startPlaceIndex, endPlaceIndex);
         Move(levelNumber - 1, sidingPlaceIndex, endPlaceIndex);
     }
-
+    
     public override string ToString()
     {
         var levelBuilder = new StringBuilder();
@@ -82,5 +85,28 @@ public class TowerOfHanoi
         levelBuilder.Remove(levelBuilder.Length - LevelSeparator.Length, LevelSeparator.Length);
         levelBuilder.Append(PlaceSeparator);
         return levelBuilder.ToString();
+    }
+
+    public IDisposable Subscribe(IObserver<Stack<int>[]> observer)
+    {
+        if (!_observers.Contains(observer)) _observers.Add(observer);
+        return new Unsubscriber(_observers, observer);
+    }
+
+    private sealed class Unsubscriber : IDisposable
+    {
+        private readonly List<IObserver<Stack<int>[]>> _levelsObservers;
+        private readonly IObserver<Stack<int>[]>? _levelsObserver;
+        
+        public Unsubscriber(List<IObserver<Stack<int>[]>> observers, IObserver<Stack<int>[]> observer)
+        {
+            _levelsObservers = observers;
+            _levelsObserver = observer;
+        }
+
+        public void Dispose()
+        {
+            if (_levelsObserver is not null && _levelsObservers.Contains(_levelsObserver)) _levelsObservers.Remove(_levelsObserver);
+        }
     }
 }
