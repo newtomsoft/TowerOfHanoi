@@ -23,17 +23,20 @@ public class TowerOfHanoi
             _levels[endPlaceIndex].Push(levelToMove);
             return;
         }
+
+        var placeIndexes = new[] { 0, 1, 2 };
+        var sidingPlaceIndex = placeIndexes.First(index => index != startPlaceIndex && index != endPlaceIndex);
         if (levelNumber == 2)
         {
-            var placeIndexes = new int[] {0, 1, 2};
-            var otherPlaceIndex = placeIndexes.First(i => i!= startPlaceIndex && i!= endPlaceIndex);
-            Move(1, startPlaceIndex, otherPlaceIndex);
+            Move(1, startPlaceIndex, sidingPlaceIndex);
             Move(1, startPlaceIndex, endPlaceIndex);
-            Move(1, otherPlaceIndex, endPlaceIndex);
+            Move(1, sidingPlaceIndex, endPlaceIndex);
             return;
         }
 
-        return;
+        Move(levelNumber - 1, startPlaceIndex, sidingPlaceIndex);
+        Move(1, startPlaceIndex, endPlaceIndex);
+        Move(levelNumber-1, sidingPlaceIndex, endPlaceIndex);
     }
 
     public override string ToString()

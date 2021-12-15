@@ -52,4 +52,49 @@ public class TowerOfHanoiMoveShould
         towerOfHanoi.Move(1, 1, 0);
         towerOfHanoi.ToString().ShouldBe("place A: 1");
     }
+
+    [Fact]
+    public void Return1And2PlaceCWhenMove1And2From0To2()
+    {
+        var stackA = new Stack<int>();
+        stackA.Push(2);
+        stackA.Push(1);
+        var stackB = new Stack<int>();
+        var stackC = new Stack<int>();
+        var towerOfHanoi = new Domain.TowerOfHanoi(stackA, stackB, stackC);
+        towerOfHanoi.ToString().ShouldBe("place A: 1 - 2");
+        towerOfHanoi.Move(2, 0, 2);
+        towerOfHanoi.ToString().ShouldBe("place C: 1 - 2");
+    }
+
+    [Fact]
+    public void Return1And2And3PlaceCWhenMove1And2And3From0To2()
+    {
+        var stackA = new Stack<int>();
+        stackA.Push(3);
+        stackA.Push(2);
+        stackA.Push(1);
+        var stackB = new Stack<int>();
+        var stackC = new Stack<int>();
+        var towerOfHanoi = new Domain.TowerOfHanoi(stackA, stackB, stackC);
+        towerOfHanoi.ToString().ShouldBe("place A: 1 - 2 - 3");
+        towerOfHanoi.Move(3, 0, 2);
+        towerOfHanoi.ToString().ShouldBe("place C: 1 - 2 - 3");
+    }
+
+    [Fact]
+    public void Return1To4PlaceCWhenMove1To4From0To2()
+    {
+        var stackA = new Stack<int>();
+        stackA.Push(4);
+        stackA.Push(3);
+        stackA.Push(2);
+        stackA.Push(1);
+        var stackB = new Stack<int>();
+        var stackC = new Stack<int>();
+        var towerOfHanoi = new Domain.TowerOfHanoi(stackA, stackB, stackC);
+        towerOfHanoi.ToString().ShouldBe("place A: 1 - 2 - 3 - 4");
+        towerOfHanoi.Move(4, 0, 2);
+        towerOfHanoi.ToString().ShouldBe("place C: 1 - 2 - 3 - 4");
+    }
 }
