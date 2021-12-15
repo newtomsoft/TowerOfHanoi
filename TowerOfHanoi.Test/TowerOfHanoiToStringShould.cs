@@ -6,7 +6,7 @@ namespace TowerOfHanoi.Test;
 public class TowerOfHanoiToStringShould
 {
     [Fact]
-    public void Return1and2LevelsInPlaceA()
+    public void Return1And2LevelsInPlaceA()
     {
         var stackA = new Stack<int>();
         stackA.Push(2);
@@ -18,7 +18,7 @@ public class TowerOfHanoiToStringShould
     }
 
     [Fact]
-    public void Return1and2LevelsInPlaceA3and4InPlaceB()
+    public void Return1And2LevelsInPlaceA3And4InPlaceB()
     {
         var stackA = new Stack<int>();
         stackA.Push(2);
@@ -32,7 +32,7 @@ public class TowerOfHanoiToStringShould
     }
 
     [Fact]
-    public void Return1and2LevelsInPlaceA3and4InPlaceB5and6and7InPlaceC()
+    public void Return1And2LevelsInPlaceA3And4InPlaceB5And6And7InPlaceC()
     {
         var stackA = new Stack<int>();
         stackA.Push(2);
@@ -47,5 +47,4 @@ public class TowerOfHanoiToStringShould
         var towerOfHanoi = new Domain.TowerOfHanoi(stackA, stackB, stackC);
         towerOfHanoi.ToString().ShouldBe("place A: 1 - 2 / place B: 3 - 4 / place C: 5 - 6 - 7");
     }
-
 }
