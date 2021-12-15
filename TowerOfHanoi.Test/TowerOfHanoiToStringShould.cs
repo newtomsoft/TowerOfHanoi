@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using Xunit;
 
 namespace TowerOfHanoi.Test;
-public class TowerOfHanoiTest
+public class TowerOfHanoiToStringShould
 {
     [Fact]
-    public void TowerOfHanoiWith2LevelsInPlaceAToStringShouldReturn()
+    public void Return1and2LevelsInPlaceA()
     {
         var stackA = new Stack<int>();
         stackA.Push(2);
@@ -18,7 +18,7 @@ public class TowerOfHanoiTest
     }
 
     [Fact]
-    public void TowerOfHanoiWith1and2LevelsInPlaceA3and4InPlaceBToStringShouldReturn()
+    public void Return1and2LevelsInPlaceA3and4InPlaceB()
     {
         var stackA = new Stack<int>();
         stackA.Push(2);
@@ -31,5 +31,21 @@ public class TowerOfHanoiTest
         towerOfHanoi.ToString().ShouldBe("place A: 1 - 2 / place B: 3 - 4");
     }
 
+    [Fact]
+    public void Return1and2LevelsInPlaceA3and4InPlaceB5and6and7InPlaceC()
+    {
+        var stackA = new Stack<int>();
+        stackA.Push(2);
+        stackA.Push(1);
+        var stackB = new Stack<int>();
+        stackB.Push(4);
+        stackB.Push(3);
+        var stackC = new Stack<int>();
+        stackC.Push(7);
+        stackC.Push(6);
+        stackC.Push(5);
+        var towerOfHanoi = new Domain.TowerOfHanoi(stackA, stackB, stackC);
+        towerOfHanoi.ToString().ShouldBe("place A: 1 - 2 / place B: 3 - 4 / place C: 5 - 6 - 7");
+    }
 
 }
