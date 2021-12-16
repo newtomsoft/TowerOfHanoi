@@ -1,100 +1,124 @@
 using Shouldly;
 using System.Collections.Generic;
 using Xunit;
+// ReSharper disable CollectionNeverUpdated.Local
 
 namespace TowerOfHanoi.Test;
 public class TowerOfHanoiMoveShould
 {
-    [Fact]
-    public void Return1PlaceCWhenMoveOnly1LevelFrom0to2()
+    private Stack<int> _stackA = new();
+    private Stack<int> _stackB = new();
+    private Stack<int> _stackC = new();
+
+    private void FillStacks(IEnumerable<int> levelsA, IEnumerable<int> levelsB, IEnumerable<int> levelsC)
     {
-        var stackA = new Stack<int>();
-        stackA.Push(1);
-        var stackB = new Stack<int>();
-        var stackC = new Stack<int>();
-        var towerOfHanoi = new Domain.TowerOfHanoi(stackA, stackB, stackC);
-        towerOfHanoi.Move(1,0,2);
-        towerOfHanoi.ToString().ShouldBe("Move 1 place C: 1");
+        _stackA = new Stack<int>(levelsA);
+        _stackB = new Stack<int>(levelsB);
+        _stackC = new Stack<int>(levelsC);
     }
 
     [Fact]
-    public void Return1PlaceBWhenMoveOnly1LevelFrom0to1()
+    public void Return0Place2WhenMoveOnly0LevelFrom0to2()
     {
-        var stackA = new Stack<int>();
-        stackA.Push(1);
-        var stackB = new Stack<int>();
-        var stackC = new Stack<int>();
-        var towerOfHanoi = new Domain.TowerOfHanoi(stackA, stackB, stackC);
+        var levelsA = new List<int> { 0 };
+        var levelsB = new List<int>();
+        var levelsC = new List<int>();
+
+        FillStacks(levelsA, levelsB, levelsC);
+        var stacksExpected = new[] {_stackC, _stackB, _stackA};
+        var towerOfHanoi = new Domain.TowerOfHanoi(levelsA, levelsB, levelsC);
+        towerOfHanoi.Move(1, 0, 2);
+        towerOfHanoi.Levels.ShouldBe(stacksExpected);
+    }
+
+
+
+    [Fact]
+    public void Return0Place1WhenMoveOnly0LevelFrom0to1()
+    {
+        var levelsA = new List<int> { 0 };
+        var levelsB = new List<int>();
+        var levelsC = new List<int>();
+
+        FillStacks(levelsA, levelsB, levelsC);
+        var stacksExpected = new[] { _stackB, _stackA, _stackC };
+        var towerOfHanoi = new Domain.TowerOfHanoi(levelsA, levelsB, levelsC);
         towerOfHanoi.Move(1, 0, 1);
-        towerOfHanoi.ToString().ShouldBe("Move 1 place B: 1");
+        towerOfHanoi.Levels.ShouldBe(stacksExpected);
     }
 
     [Fact]
-    public void Return1PlaceCWhenMoveOnly1LevelFrom1to2()
+    public void Return0Place2WhenMoveOnly0LevelFrom1to2()
     {
-        var stackA = new Stack<int>();
-        var stackB = new Stack<int>();
-        stackB.Push(1);
-        var stackC = new Stack<int>();
-        var towerOfHanoi = new Domain.TowerOfHanoi(stackA, stackB, stackC);
+        var levelsA = new List<int>();
+        var levelsB = new List<int> { 0 };
+        var levelsC = new List<int>();
+
+        FillStacks(levelsA, levelsB, levelsC);
+        var stacksExpected = new[] { _stackA, _stackC, _stackB };
+
+        var towerOfHanoi = new Domain.TowerOfHanoi(levelsA, levelsB, levelsC);
         towerOfHanoi.Move(1, 1, 2);
-        towerOfHanoi.ToString().ShouldBe("Move 1 place C: 1");
+        towerOfHanoi.Levels.ShouldBe(stacksExpected);
     }
 
     [Fact]
-    public void Return1PlaceAWhenMoveOnly1LevelFrom1to0()
+    public void Return0Place0WhenMoveOnly0LevelFrom1to0()
     {
-        var stackA = new Stack<int>();
-        var stackB = new Stack<int>();
-        stackB.Push(1);
-        var stackC = new Stack<int>();
-        var towerOfHanoi = new Domain.TowerOfHanoi(stackA, stackB, stackC);
+        var levelsA = new List<int>();
+        var levelsB= new List<int> { 0 };
+        var levelsC = new List<int>();
+
+        FillStacks(levelsA, levelsB, levelsC);
+        var stacksExpected = new[] { _stackB, _stackA, _stackC };
+
+        var towerOfHanoi = new Domain.TowerOfHanoi(levelsA, levelsB, levelsC);
         towerOfHanoi.Move(1, 1, 0);
-        towerOfHanoi.ToString().ShouldBe("Move 1 place A: 1");
+        towerOfHanoi.Levels.ShouldBe(stacksExpected);
     }
 
     [Fact]
-    public void Return1And2PlaceCWhenMove1And2From0To2()
+    public void Return0And1Place2WhenMove0And1From0To2()
     {
-        var stackA = new Stack<int>();
-        stackA.Push(2);
-        stackA.Push(1);
-        var stackB = new Stack<int>();
-        var stackC = new Stack<int>();
-        var towerOfHanoi = new Domain.TowerOfHanoi(stackA, stackB, stackC);
-        towerOfHanoi.ToString().ShouldBe("Move 0 place A: 1 - 2");
-        towerOfHanoi.Move( 0, 2);
-        towerOfHanoi.ToString().ShouldBe("Move 3 place C: 1 - 2");
-    }
+        var levelsA = new List<int> { 0, 1 };
+        var levelsB = new List<int>();
+        var levelsC = new List<int>();
 
-    [Fact]
-    public void Return1And2And3PlaceCWhenMove1And2And3From0To2()
-    {
-        var stackA = new Stack<int>();
-        stackA.Push(3);
-        stackA.Push(2);
-        stackA.Push(1);
-        var stackB = new Stack<int>();
-        var stackC = new Stack<int>();
-        var towerOfHanoi = new Domain.TowerOfHanoi(stackA, stackB, stackC);
-        towerOfHanoi.ToString().ShouldBe("Move 0 place A: 1 - 2 - 3");
+        FillStacks(levelsA, levelsB, levelsC);
+        var stacksExpected = new[] { _stackC, _stackB, _stackA };
+
+        var towerOfHanoi = new Domain.TowerOfHanoi(levelsA, levelsB, levelsC);
         towerOfHanoi.Move(0, 2);
-        towerOfHanoi.ToString().ShouldBe("Move 7 place C: 1 - 2 - 3");
+        towerOfHanoi.Levels.ShouldBe(stacksExpected);
     }
 
     [Fact]
-    public void Return1To4PlaceCWhenMove1To4From0To2()
+    public void Return0And1And2Place2WhenMove0And1And2From0To2()
     {
-        var stackA = new Stack<int>();
-        stackA.Push(4);
-        stackA.Push(3);
-        stackA.Push(2);
-        stackA.Push(1);
-        var stackB = new Stack<int>();
-        var stackC = new Stack<int>();
-        var towerOfHanoi = new Domain.TowerOfHanoi(stackA, stackB, stackC);
-        towerOfHanoi.ToString().ShouldBe("Move 0 place A: 1 - 2 - 3 - 4");
+        var levelsA = new List<int> { 0, 1, 2 };
+        var levelsB = new List<int>();
+        var levelsC = new List<int>();
+
+        FillStacks(levelsA, levelsB, levelsC);
+        var stacksExpected = new[] { _stackC, _stackB, _stackA };
+
+        var towerOfHanoi = new Domain.TowerOfHanoi(levelsA, levelsB, levelsC);
         towerOfHanoi.Move(0, 2);
-        towerOfHanoi.ToString().ShouldBe("Move 15 place C: 1 - 2 - 3 - 4");
+        towerOfHanoi.Levels.ShouldBe(stacksExpected);
+    }
+
+    [Fact]
+    public void Return0To3Place2WhenMove0To3From0To2()
+    {
+        var levelsA = new List<int> { 0, 1, 2, 3 };
+        var levelsB = new List<int>();
+        var levelsC = new List<int>();
+
+        FillStacks(levelsA, levelsB, levelsC);
+        var stacksExpected = new[] { _stackC, _stackB, _stackA };
+
+        var towerOfHanoi = new Domain.TowerOfHanoi(levelsA, levelsB, levelsC);
+        towerOfHanoi.Move(0, 2);
+        towerOfHanoi.Levels.ShouldBe(stacksExpected);
     }
 }

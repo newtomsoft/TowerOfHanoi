@@ -27,9 +27,8 @@ public sealed class TowerOfHanoiObserver : IObserver<Stack<int>[]>
 
     public void OnNext(Stack<int>[] value)
     {
-        _moveNumber++;
         var levelBuilder = new StringBuilder();
-        levelBuilder.Append($"Move {_moveNumber} ");
+        levelBuilder.Append($"Move {_moveNumber++} ");
         for (var i = 0; i < value.Length; i++) levelBuilder.Append(PlaceToString(value[i], Places[i]));
         var levelString = levelBuilder.ToString();
         levelString = PlaceSeparator.Aggregate(levelString, (current, separator) => current.TrimEnd(separator));
