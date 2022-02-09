@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TowerOfHanoi.Domain\TowerOfHanoi.Domain.csproj" />
+    <ProjectReference Include="..\TowerOfHanoi.UI.Blazor.WebAssembly\TowerOfHanoi.UI.Blazor.WebAssembly.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,0 +1,98 @@
+﻿@page "/hanoi"
+@using TowerOfHanoi.Domain
+
+<link href="css/Hanoi.css" rel="stylesheet" />
+
+<PageTitle>Tower of Hanoi</PageTitle>
+
+<h1>Tower of Hanoi</h1>
+
+<button class="btn btn-primary" @onclick="ShowTower">show tower</button>
+<input type="number" @onchange="args => Tower0ChangeLevelsNumber(args)" value=@_inputTower0LevelNumber min="2" max="12" name="tower0levelNumber"/>
+<input type="number" @onchange="args => Tower0ChangeDelay(args)" value=@_inputTower0Delay min="100" max="5000" step="100" name="tower0levelNumber"/>
+
+@if (_tower0Places is null)
+{
+    <p>loading places....</p>
+}
+else
+{
+    <div class="hanoi-container">
+        <div class="place-container">
+            @foreach (var place in _tower0Places)
+            {
+                <div class="level-container">
+                    @foreach (var level in place.Levels)
+                    {
+                        var divLevel = $"level{level.Index}";
+                        <div class="level @divLevel" style="display: flex"/>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+}
+
+
+@code {
+    static bool _isVisited;
+    static string _inputTower0LevelNumber = "6";
+    static int Tower0LevelNumber => int.Parse(_inputTower0LevelNumber);
+    static string _inputTower0Delay = "1000";
+    static TowerOfHanoi _towerOfHanoi0 = null!;
+    static Place[]? _tower0Places;
+    static Task? _moveTower0Task;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+    }
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (_isVisited)
+        {
+            await base.OnInitializedAsync();
+            return;
+        }
+        _isVisited = true;
+        _towerOfHanoi0 = new TowerOfHanoi(Tower0LevelNumber);
+        await base.OnInitializedAsync();
+    }
+
+
+    private async Task ShowTower()
+    {
+        _moveTower0Task = new Task(() => _towerOfHanoi0.MoveLevels());
+        _moveTower0Task.Start();
+        await MoveTower();
+    }
+
+    private async Task MoveTower()
+    {
+        await foreach (var step in _towerOfHanoi0.GetStepsAsync())
+        {
+            _tower0Places = step.Places;
+            await InvokeAsync(StateHasChanged);
+        }
+    }
+
+    private async Task Tower0ChangeLevelsNumber()
+    {
+        _towerOfHanoi0 = new TowerOfHanoi(int.Parse(_inputTower0LevelNumber!));
+        await MoveTower();
+    }
+
+    private void Tower0ChangeLevelsNumber(ChangeEventArgs args)
+    {
+        _inputTower0LevelNumber = args.Value!.ToString()!;
+        _towerOfHanoi0 = new TowerOfHanoi(int.Parse(_inputTower0LevelNumber!));
+        MoveTower();
+    }
+
+    private void Tower0ChangeDelay(ChangeEventArgs args) => _towerOfHanoi0.ChangeDelay(int.Parse(args.Value!.ToString()!));
+}

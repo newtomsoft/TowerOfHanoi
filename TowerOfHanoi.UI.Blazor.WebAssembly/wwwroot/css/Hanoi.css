@@ -1,0 +1,55 @@
+﻿.hanoi-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    background-color: #EEEEEE;
+    height: 300px;
+}
+
+.place-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+.level-container {
+    display: flex;
+    flex-direction: column;
+    flex-direction: column-reverse;
+    width: 30%;
+}
+
+    .level-container > div {
+        border-style: solid;
+        background-color: SaddleBrown;
+        margin: 1px;
+        align-self: center;
+    }
+
+.level {
+    height: 40px;
+}
+
+.level5 {
+    width: 50%;
+}
+
+.level4 {
+    width: 60%;
+}
+
+.level3 {
+    width: 70%;
+}
+
+.level2 {
+    width: 80%;
+}
+
+.level1 {
+    width: 90%;
+}
+
+.level0 {
+    width: 100%;
+}
